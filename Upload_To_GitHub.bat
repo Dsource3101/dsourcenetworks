@@ -1,6 +1,11 @@
 @echo off
 echo =========================================
-echo   Uploading Website Updates to GitHub...
+echo   Step 1: Clearing old GitHub logins...
+echo =========================================
+cmdkey /delete:LegacyGeneric:target=git:https://github.com
+echo.
+echo =========================================
+echo   Step 2: Uploading to GitHub...
 echo =========================================
 echo.
 
