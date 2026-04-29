@@ -41,15 +41,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('corporateModal');
     const closeBtn = document.querySelector('.close-modal');
 
+    // Auth Modals Logic
+    const loginModal = document.getElementById('loginModal');
+    const signupModal = document.getElementById('signupModal');
+    const loginBtn = document.getElementById('loginBtn');
+    
+    if (loginBtn) {
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.add('show');
+        });
+    }
+
+    document.getElementById('closeLogin')?.addEventListener('click', () => {
+        loginModal.classList.remove('show');
+    });
+
+    document.getElementById('closeSignup')?.addEventListener('click', () => {
+        signupModal.classList.remove('show');
+    });
+
+    document.getElementById('openSignup')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginModal.classList.remove('show');
+        signupModal.classList.add('show');
+    });
+
+    document.getElementById('openLogin')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        signupModal.classList.remove('show');
+        loginModal.classList.add('show');
+    });
+
     if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => {
             modal.classList.remove('show');
         });
 
         window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('show');
-            }
+            if (e.target === modal) modal.classList.remove('show');
+            if (e.target === loginModal) loginModal.classList.remove('show');
+            if (e.target === signupModal) signupModal.classList.remove('show');
         });
     }
 

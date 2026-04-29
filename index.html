@@ -29,7 +29,9 @@
                 <a href="#collections">Collections</a>
                 <a href="#corporate">Corporate</a>
                 <a href="#about">About Us</a>
-                <a href="#contact" class="btn btn-outline">Contact Us</a>
+                <a href="#contact">Contact Us</a>
+                <a href="#" id="loginBtn" class="btn btn-outline"><i class="fas fa-user-circle"></i> Log In</a>
+                <a href="employee.html" class="btn btn-primary" style="margin-left: 10px; background-color: #1a1a1a; border-color: #1a1a1a;"><i class="fas fa-user-shield"></i> Employee Portal</a>
             </div>
             <div class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -148,14 +150,13 @@
         </div>
     </section>
 
-    <!-- Why Choose Us -->
-    <section class="why-us section">
+    <!-- About Us / Why Choose Us -->
+    <section id="about" class="why-us section">
         <div class="container">
             <div class="why-grid">
                 <div class="why-content">
-                    <h2>Why Choose D Source Network?</h2>
-                    <p>We understand that a gift is more than just an item; it's an extension of your brand and a
-                        reflection of your appreciation.</p>
+                    <h2>About D Source Network</h2>
+                    <p>At D Source Network, we believe that exceptional gifting is the cornerstone of strong corporate relationships. We specialize in curating premium, bespoke gifting experiences that go beyond mere utility to serve as powerful extensions of your brand's identity and values. Whether celebrating milestones, expressing gratitude, or welcoming new talent, our meticulously crafted collections are designed to leave a lasting impression of excellence and thoughtfulness.</p>
                     <ul class="feature-list">
                         <li><i class="fas fa-check-circle"></i> End-to-end B2B solutions (from curation to delivery)
                         </li>
@@ -192,6 +193,7 @@
                 <h4>Contact & Helpline</h4>
                 <p><i class="fas fa-envelope"></i> dsourcenetworks@gmail.com</p>
                 <p><i class="fas fa-phone"></i> +91 123 456 7890</p>
+                <p><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>Thane West, Mumbai, Maharashtra, India, 400601</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-linkedin"></i></a>
                     <a href="https://www.instagram.com/sahay2821?igsh=ZDdjcTI2NDg4bmlx" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -200,7 +202,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 D Source Network. All rights reserved.</p>
+            <p>&copy; 2026 D Source Network. All rights reserved. | <a href="employee.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-user-shield"></i> Employee Portal</a></p>
         </div>
     </footer>
 
@@ -229,6 +231,57 @@
                 </div>
                 <input type="hidden" name="_subject" value="New Corporate Inquiry!">
                 <button type="submit" class="btn btn-primary w-100" style="width: 100%;">Send Inquiry</button>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLogin">&times;</span>
+            <h2>Welcome Back</h2>
+            <p>Log in to access your order history and corporate discounts.</p>
+            <form action="#" method="POST" class="inquiry-form" onsubmit="event.preventDefault(); alert('Login successful! (Demo Mode)'); document.getElementById('loginModal').classList.remove('show');">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" style="width: 100%;">Log In</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                    Don't have an account? <a href="#" id="openSignup" style="color: var(--primary-color); font-weight: bold;">Sign up here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSignup">&times;</span>
+            <h2>Create an Account</h2>
+            <p>Join D Source Network for exclusive corporate offers.</p>
+            <form action="#" method="POST" class="inquiry-form" onsubmit="event.preventDefault(); alert('Account created successfully! (Demo Mode)'); document.getElementById('signupModal').classList.remove('show');">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Create Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" style="width: 100%;">Sign Up</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                    Already have an account? <a href="#" id="openLogin" style="color: var(--primary-color); font-weight: bold;">Log in here</a>
+                </p>
             </form>
         </div>
     </div>

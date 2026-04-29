@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Portal | D Source Network</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --dashboard-bg: #f4f7f6;
+            --accent-color: #d4af37;
+        }
+
+        body {
+            background-color: var(--dashboard-bg);
+            margin: 0;
+            display: flex;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: #1a1a1a;
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 0 30px 30px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: white;
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-color);
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card-info h3 { margin: 0; font-size: 1.8rem; }
+        .card-info p { margin: 5px 0 0; color: #666; font-size: 0.9rem; }
+
+        /* Sections */
+        .portal-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .portal-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Attendance Styles */
+        .attendance-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .btn-attendance {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .btn-attendance:active { transform: scale(0.95); }
+
+        /* Chat Styles */
+        .chat-container {
+            background: white;
+            border-radius: 12px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+        }
+
+        .message.received { background: #f1f1f1; align-self: flex-start; }
+        .message.sent { background: var(--accent-color); color: white; align-self: flex-end; }
+
+        .chat-input {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        /* Inventory Table */
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .inventory-table th, .inventory-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .inventory-table th { background: #f8f9fa; font-weight: 600; }
+        
+        .stock-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .stock-high { background: #e6fcf5; color: #0ca678; }
+        .stock-low { background: #fff5f5; color: #fa5252; }
+    </style>
+</head>
+<body>
+
+    <!-- Employee Login Gate -->
+    <div id="employeeLoginGate" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div style="background: white; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 20px;"></i>
+            <h2 style="margin-bottom: 10px; font-family: var(--font-heading);">Official Access Only</h2>
+            <p style="color: #666; margin-bottom: 30px; font-size: 0.9rem;">Please enter your official ID and password.</p>
+            
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #333; font-weight: 600;">Employee ID</label>
+                <input type="text" id="empId" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" placeholder="Enter ID (e.g., admin)">
+            </div>
+            <div style="text-align: left; margin-bottom: 25px;">
+                <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #333; font-weight: 600;">Secure Password</label>
+                <input type="password" id="empPass" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" placeholder="Enter Password">
+            </div>
+            
+            <p id="empError" style="color: #fa5252; font-size: 0.85rem; margin-top: -15px; margin-bottom: 15px; display: none;">Invalid ID or Password. Access Denied.</p>
+            
+            <button onclick="verifyEmployee()" style="background: var(--accent-color); color: white; border: none; width: 100%; padding: 15px; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s;">Secure Login</button>
+            <p style="margin-top: 15px; font-size: 0.9rem;">New employee? <a href="#" onclick="showAccessForm(); return false;" style="color: var(--accent-color); font-weight: bold;">Request Access</a></p>
+            <a href="index.html" style="display: block; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem;">Return to Public Site</a>
+        </div>
+    </div>
+
+    <!-- Employee Request Form Gate -->
+    <div id="employeeRequestGate" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; z-index: 9999; display: none; align-items: center; justify-content: center; flex-direction: column;">
+        <div style="background: white; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <i class="fas fa-id-badge" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 20px;"></i>
+            <h2 style="margin-bottom: 10px; font-family: var(--font-heading);">Request Access</h2>
+            <p style="color: #666; margin-bottom: 30px; font-size: 0.9rem;">Submit your details. Officials will review and email your credentials.</p>
+            
+            <form action="https://formsubmit.co/dsourcenetworks@gmail.com" method="POST" style="text-align: left;">
+                <input type="hidden" name="_subject" value="New Employee Portal Access Request!">
+                <input type="hidden" name="_next" value="https://dsource3101.github.io/dsourcenetworks/employee.html">
+                <input type="hidden" name="_captcha" value="false">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #333; font-weight: 600;">Full Name</label>
+                    <input type="text" name="Employee_Name" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" required>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #333; font-weight: 600;">Email Address</label>
+                    <input type="email" name="Employee_Email" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" required>
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #333; font-weight: 600;">Role / Position</label>
+                    <input type="text" name="Employee_Role" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" required>
+                </div>
+                
+                <p style="margin-top:10px;font-size:0.85rem;color:#666;">You will receive a verification email once your request is approved by an official.</p>
+            </form>
+            <a href="#" onclick="hideAccessForm(); return false;" style="display: block; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem;">Back to Login</a>
+        </div>
+    </div>
+
+    <!-- Main Content hidden by default -->
+    <div id="secureApp" style="display: none; width: 100%;">
+    <aside class="sidebar">
+        <div class="sidebar-logo">D SOURCE</div>
+        <nav class="sidebar-nav">
+            <div class="nav-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-th-large"></i> Dashboard
+            </div>
+            <div class="nav-item" onclick="showSection('attendance')">
+                <i class="fas fa-clock"></i> Attendance
+            </div>
+            <div class="nav-item" onclick="showSection('chat')">
+                <i class="fas fa-comments"></i> Team Chat
+            </div>
+            <div class="nav-item" onclick="showSection('inventory')">
+                <i class="fas fa-box-open"></i> Inventory
+            </div>
+        </nav>
+        <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">
+            <a href="index.html" style="color: inherit; text-decoration: none;"><i class="fas fa-sign-out-alt"></i> Back to Site</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h2 id="section-title">Operations Dashboard</h2>
+            <div class="user-profile">
+                <div class="text-right">
+                    <div style="font-weight: 600;">Harsh Pandey</div>
+                    <div style="font-size: 0.8rem; color: #666;">Administrator</div>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Harsh+Pandey&background=d4af37&color=fff" alt="User">
+            </div>
+        </header>
+
+        <!-- Dashboard View -->
+        <div id="dashboard" class="portal-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e7f5ff; color: #228be6;"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="card-info">
+                        <h3>142</h3>
+                        <p>Orders this month</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f3f0ff; color: #7950f2;"><i class="fas fa-chart-line"></i></div>
+                    <div class="card-info">
+                        <h3>₹2.4L</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff9db; color: #fcc419;"><i class="fas fa-boxes"></i></div>
+                    <div class="card-info">
+                        <h3>18</h3>
+                        <p>Low Stock Items</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 30px; border-radius: 12px;">
+                <h3>Recent Sales Performance</h3>
+                <p style="color: #666;">Visualizing order trends and fulfillment rates.</p>
+                <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; padding-top: 20px;">
+                    <div style="flex-grow: 1; background: var(--accent-color); height: 60%; border-radius: 4px 4px 0 0;"></div>
+                    <div style="flex-grow: 1; background: var(--accent-color); height: 85%; border-radius: 4px 4px 0 0;"></div>
+                    <div style="flex-grow: 1; background: var(--accent-color); height: 45%; border-radius: 4px 4px 0 0;"></div>
+                    <div style="flex-grow: 1; background: var(--accent-color); height: 70%; border-radius: 4px 4px 0 0;"></div>
+                    <div style="flex-grow: 1; background: var(--accent-color); height: 95%; border-radius: 4px 4px 0 0;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance View -->
+        <div id="attendance" class="portal-section">
+            <div class="attendance-box">
+                <i class="fas fa-fingerprint" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 20px; display: block;"></i>
+                <h2>Digital Attendance System</h2>
+                <p style="color: #666; margin-bottom: 30px;">Mark your presence for today's shift (29th April 2026).</p>
+                <button class="btn-attendance" id="markBtn" onclick="markAttendance()">Punch In</button>
+                <div id="attendanceLogs" style="margin-top: 30px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Today's Log</h4>
+                    <div id="logList">
+                        <p style="color: #999; font-style: italic;">No records found for today.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat View -->
+        <div id="chat" class="portal-section">
+            <div class="chat-container">
+                <div class="chat-header">Official Team Channel</div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message received">Good morning team! Let's ensure the 50 Corporate Hampers for TechCorp are shipped by 4 PM today.</div>
+                    <div class="message sent">Copy that. Already in production.</div>
+                    <div class="message received">Inventory check on Silver Box cases?</div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" placeholder="Type your message..." id="chatInputField">
+                    <button class="btn-attendance" style="padding: 10px 20px; margin: 0; font-size: 0.9rem;" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory View -->
+        <div id="inventory" class="portal-section">
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Current Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Executive Silver Box</td>
+                        <td>Premium</td>
+                        <td>45 units</td>
+                        <td><span class="stock-badge stock-high">Healthy</span></td>
+                    </tr>
+                    <tr>
+                        <td>Festive Grandeur Hamper</td>
+                        <td>Festival</td>
+                        <td>12 units</td>
+                        <td><span class="stock-badge stock-low">Low Stock</span></td>
+                    </tr>
+                    <tr>
+                        <td>Wellness Kit (Tea Set)</td>
+                        <td>Corporate</td>
+                        <td>88 units</td>
+                        <td><span class="stock-badge stock-high">Healthy</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    </div>
+
+    <script>
+        function verifyEmployee() {
+            const id = document.getElementById('empId').value;
+            const pass = document.getElementById('empPass').value;
+            
+            if (id === 'Dsourceteam' && pass === 'Dsource3101') {
+                document.getElementById('employeeLoginGate').style.display = 'none';
+                document.getElementById('secureApp').style.display = 'flex';
+            } else {
+                document.getElementById('empError').style.display = 'block';
+                document.getElementById('empPass').value = '';
+            }
+        }
+
+        function showAccessForm() {
+            document.getElementById('employeeLoginGate').style.display = 'none';
+            document.getElementById('employeeRequestGate').style.display = 'flex';
+        }
+
+        function hideAccessForm() {
+            document.getElementById('employeeRequestGate').style.display = 'none';
+            document.getElementById('employeeLoginGate').style.display = 'flex';
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
+            // Remove active class from nav
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            // Set active nav
+            event.currentTarget.classList.add('active');
+            
+            // Update title
+            const titles = {
+                'dashboard': 'Operations Dashboard',
+                'attendance': 'Employee Attendance',
+                'chat': 'Team Communication',
+                'inventory': 'Stock Management'
+            };
+            document.getElementById('section-title').innerText = titles[sectionId];
+        }
+
+        function markAttendance() {
+            const btn = document.getElementById('markBtn');
+            const list = document.getElementById('logList');
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            
+            btn.innerText = 'Punched In ✓';
+            btn.style.background = '#0ca678';
+            btn.disabled = true;
+            
+            list.innerHTML = `<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                <span><b>Punch In</b></span>
+                <span>${timeStr}</span>
+            </div>` + list.innerHTML;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInputField');
+            const container = document.getElementById('chatMessages');
+            if(input.value.trim() === '') return;
+            
+            const msg = document.createElement('div');
+            msg.className = 'message sent';
+            msg.innerText = input.value;
+            container.appendChild(msg);
+            
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>
