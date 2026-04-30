@@ -314,6 +314,9 @@
             <div class="nav-item" onclick="showSection('inventory')">
                 <i class="fas fa-box-open"></i> Inventory
             </div>
+            <div class="nav-item" onclick="showSection('team')">
+                <i class="fas fa-users"></i> Team Directory
+            </div>
         </nav>
         <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">
             <a href="index.html" style="color: inherit; text-decoration: none;"><i class="fas fa-sign-out-alt"></i> Back to Site</a>
@@ -374,15 +377,20 @@
         <!-- Attendance View -->
         <div id="attendance" class="portal-section">
             <div class="attendance-box">
-                <i class="fas fa-fingerprint" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 20px; display: block;"></i>
                 <h2>Digital Attendance System</h2>
-                <p style="color: #666; margin-bottom: 30px;">Mark your presence for today's shift (29th April 2026).</p>
-                <button class="btn-attendance" id="markBtn" onclick="markAttendance()">Punch In</button>
+                <p id="currentDateDisplay" style="color: #666; margin-bottom: 30px;">Loading date...</p>
+                <div id="attendanceActions">
+                    <button class="btn-attendance" id="punchInBtn" onclick="handleAttendance('Punch In')">Punch In</button>
+                    <button class="btn-attendance" id="punchOutBtn" onclick="handleAttendance('Punch Out')" style="background: #e03131; display: none;">Punch Out</button>
+                </div>
                 <div id="attendanceLogs" style="margin-top: 30px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
                     <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Today's Log</h4>
                     <div id="logList">
                         <p style="color: #999; font-style: italic;">No records found for today.</p>
                     </div>
+                    <button onclick="exportToCSV()" style="margin-top: 20px; background: #4dabf7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; width: 100%;">
+                        <i class="fas fa-file-export"></i> Export All Logs (CSV)
+                    </button>
                 </div>
             </div>
         </div>
@@ -436,6 +444,47 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Team View -->
+        <div id="team" class="portal-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e6fcf5; color: #0ca678;"><i class="fas fa-user-check"></i></div>
+                    <div class="card-info">
+                        <h3>12</h3>
+                        <p>Employees Online</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff5f5; color: #fa5252;"><i class="fas fa-user-clock"></i></div>
+                    <div class="card-info">
+                        <h3>3</h3>
+                        <p>On Leave</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 25px; border-radius: 12px;">
+                <h3>Active Team Members</h3>
+                <div id="teamList" style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                    <!-- Team members will be loaded here -->
+                    <div style="display: flex; align-items: center; gap: 15px; padding: 15px; border: 1px solid #eee; border-radius: 10px;">
+                        <img src="https://ui-avatars.com/api/?name=Harsh+Pandey&background=d4af37&color=fff" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 600;">Harsh Pandey (You)</div>
+                            <div style="font-size: 0.8rem; color: #0ca678;"><i class="fas fa-circle" style="font-size: 0.6rem;"></i> Online • Administrator</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px; padding: 15px; border: 1px solid #eee; border-radius: 10px; opacity: 0.7;">
+                        <img src="https://ui-avatars.com/api/?name=Rahul+Sharma&background=eee&color=999" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 600;">Rahul Sharma</div>
+                            <div style="font-size: 0.8rem; color: #999;"><i class="fas fa-circle" style="font-size: 0.6rem;"></i> Offline • Logistics Manager</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     </div>
 
@@ -444,7 +493,7 @@
             const id = document.getElementById('empId').value;
             const pass = document.getElementById('empPass').value;
             
-            if (id === 'Dsourceteam' && pass === 'Dsource3101') {
+            if (id === 'teamdsource' && pass === 'Dsource@3101') {
                 document.getElementById('employeeLoginGate').style.display = 'none';
                 document.getElementById('secureApp').style.display = 'flex';
             } else {
@@ -479,26 +528,114 @@
                 'dashboard': 'Operations Dashboard',
                 'attendance': 'Employee Attendance',
                 'chat': 'Team Communication',
-                'inventory': 'Stock Management'
+                'inventory': 'Stock Management',
+                'team': 'Team Directory'
             };
             document.getElementById('section-title').innerText = titles[sectionId];
         }
 
-        function markAttendance() {
-            const btn = document.getElementById('markBtn');
-            const list = document.getElementById('logList');
+        // Attendance Logic
+        function initAttendance() {
+            const dateDisplay = document.getElementById('currentDateDisplay');
             const now = new Date();
-            const timeStr = now.toLocaleTimeString();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateDisplay.innerText = `Today's Shift: ${now.toLocaleDateString(undefined, options)}`;
             
-            btn.innerText = 'Punched In ✓';
-            btn.style.background = '#0ca678';
-            btn.disabled = true;
-            
-            list.innerHTML = `<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
-                <span><b>Punch In</b></span>
-                <span>${timeStr}</span>
-            </div>` + list.innerHTML;
+            renderAttendanceLogs();
+            checkTodayStatus();
         }
+
+        function handleAttendance(type) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString();
+            
+            let attendanceData = JSON.parse(localStorage.getItem('dsource_attendance') || '[]');
+            
+            const newEntry = {
+                type: type,
+                time: timeStr,
+                date: dateStr,
+                timestamp: now.getTime()
+            };
+            
+            attendanceData.unshift(newEntry);
+            localStorage.setItem('dsource_attendance', JSON.stringify(attendanceData));
+            
+            renderAttendanceLogs();
+            checkTodayStatus();
+            
+            // Notification
+            const msg = type === 'Punch In' ? 'Attendance marked successfully!' : 'Shift ended. Great work today!';
+            alert(msg);
+        }
+
+        function renderAttendanceLogs() {
+            const list = document.getElementById('logList');
+            const attendanceData = JSON.parse(localStorage.getItem('dsource_attendance') || '[]');
+            
+            if (attendanceData.length === 0) {
+                list.innerHTML = '<p style="color: #999; font-style: italic;">No records found.</p>';
+                return;
+            }
+            
+            list.innerHTML = attendanceData.slice(0, 10).map(entry => `
+                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
+                    <span><b style="color: ${entry.type === 'Punch In' ? '#0ca678' : '#e03131'}">${entry.type}</b> <small style="color: #999; margin-left: 10px;">${entry.date}</small></span>
+                    <span style="font-weight: 600;">${entry.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function checkTodayStatus() {
+            const attendanceData = JSON.parse(localStorage.getItem('dsource_attendance') || '[]');
+            const today = new Date().toLocaleDateString();
+            const todayEntries = attendanceData.filter(e => e.date === today);
+            
+            const inBtn = document.getElementById('punchInBtn');
+            const outBtn = document.getElementById('punchOutBtn');
+            
+            const hasPunchedIn = todayEntries.some(e => e.type === 'Punch In');
+            const hasPunchedOut = todayEntries.some(e => e.type === 'Punch Out');
+            
+            if (hasPunchedOut) {
+                inBtn.style.display = 'none';
+                outBtn.style.display = 'inline-block';
+                outBtn.innerText = 'Completed ✓';
+                outBtn.disabled = true;
+                outBtn.style.opacity = '0.7';
+            } else if (hasPunchedIn) {
+                inBtn.style.display = 'none';
+                outBtn.style.display = 'inline-block';
+            } else {
+                inBtn.style.display = 'inline-block';
+                outBtn.style.display = 'none';
+            }
+        }
+
+        function exportToCSV() {
+            const attendanceData = JSON.parse(localStorage.getItem('dsource_attendance') || '[]');
+            if (attendanceData.length === 0) {
+                alert('No records to export!');
+                return;
+            }
+            
+            let csvContent = "data:text/csv;charset=utf-8,Type,Date,Time\n";
+            attendanceData.forEach(entry => {
+                csvContent += `${entry.type},${entry.date},${entry.time}\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `dsource_attendance_${new Date().toLocaleDateString()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Run on load
+        document.addEventListener('DOMContentLoaded', initAttendance);
 
         function sendMessage() {
             const input = document.getElementById('chatInputField');

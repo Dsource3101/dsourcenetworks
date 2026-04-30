@@ -36,9 +36,9 @@ body {
     font-family: var(--font-body);
     color: var(--text-dark);
     line-height: 1.6;
-    background: linear-gradient(-45deg, #fdfbfb, #ebedee, #fafafa, #e9ecef);
+    background: linear-gradient(135deg, #faf7e6, #f4f1ea, #e8e4f2);
     background-size: 400% 400%;
-    animation: liveWallpaper 10s ease infinite;
+    animation: gentleWave 30s ease infinite;
     overflow-x: hidden;
 }
 
@@ -46,7 +46,14 @@ body {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+} 
+
+@keyframes gentleWave {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
+
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
