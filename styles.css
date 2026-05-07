@@ -36,19 +36,13 @@ body {
     font-family: var(--font-body);
     color: var(--text-dark);
     line-height: 1.6;
-    background: linear-gradient(135deg, #faf7e6, #f4f1ea, #e8e4f2);
+    background: linear-gradient(-45deg, #fdfcf0, #f7f3e9, #ece9f5, #f5f0e1);
     background-size: 400% 400%;
-    animation: gentleWave 30s ease infinite;
+    animation: liveWallpaper 15s ease infinite;
     overflow-x: hidden;
 }
 
 @keyframes liveWallpaper {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-} 
-
-@keyframes gentleWave {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
@@ -502,7 +496,7 @@ ul {
 /* Why Us Section */
 .why-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 60px;
     align-items: center;
 }
