@@ -388,16 +388,52 @@ ul {
     background-attachment: fixed;
 }
 
+.quote-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
 .corporate-quote {
-    max-width: 900px;
-    margin: 0 auto;
+    text-align: left;
     position: relative;
     z-index: 2;
+    border-right: 1px solid rgba(212, 175, 55, 0.3);
+    padding-right: 40px;
+}
+
+.why-we-exist {
+    text-align: left;
+    color: white;
+    padding-left: 20px;
+}
+
+.why-we-exist h3 {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-family: var(--font-heading);
+}
+
+.why-we-exist ul li {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.4;
+}
+
+.why-we-exist i {
+    color: var(--primary-color);
+    margin-top: 5px;
 }
 
 .corporate-quote p {
     font-family: var(--font-heading);
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-style: italic;
     line-height: 1.4;
     margin: 25px 0;
@@ -408,6 +444,22 @@ ul {
     font-size: 2.2rem;
     color: var(--primary-color);
     opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .quote-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .corporate-quote {
+        border-right: none;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        padding-right: 0;
+        padding-bottom: 40px;
+    }
+    .why-we-exist {
+        padding-left: 0;
+    }
 }
 
 /* Product Grid */
