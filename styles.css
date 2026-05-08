@@ -542,8 +542,9 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 60px;
     flex-wrap: wrap;
+    padding: 20px 0;
 }
 
 /* Our Story Section */
