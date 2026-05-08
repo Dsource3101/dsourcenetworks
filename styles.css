@@ -388,52 +388,16 @@ ul {
     background-attachment: fixed;
 }
 
-.quote-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-}
-
 .corporate-quote {
-    text-align: left;
+    max-width: 900px;
+    margin: 0 auto;
     position: relative;
     z-index: 2;
-    border-right: 1px solid rgba(212, 175, 55, 0.3);
-    padding-right: 40px;
-}
-
-.why-we-exist {
-    text-align: left;
-    color: white;
-    padding-left: 20px;
-}
-
-.why-we-exist h3 {
-    font-size: 2.2rem;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    font-family: var(--font-heading);
-}
-
-.why-we-exist ul li {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    color: rgba(255,255,255,0.9);
-    line-height: 1.4;
-}
-
-.why-we-exist i {
-    color: var(--primary-color);
-    margin-top: 5px;
 }
 
 .corporate-quote p {
     font-family: var(--font-heading);
-    font-size: 2rem;
+    font-size: 2.4rem;
     font-style: italic;
     line-height: 1.4;
     margin: 25px 0;
@@ -444,22 +408,6 @@ ul {
     font-size: 2.2rem;
     color: var(--primary-color);
     opacity: 0.9;
-}
-
-@media (max-width: 768px) {
-    .quote-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    .corporate-quote {
-        border-right: none;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-        padding-right: 0;
-        padding-bottom: 40px;
-    }
-    .why-we-exist {
-        padding-left: 0;
-    }
 }
 
 /* Product Grid */
@@ -598,64 +546,47 @@ ul {
 
 /* Our Story Section */
 .story-section {
-    padding: 120px 0;
-    background: linear-gradient(-45deg, #fdfbfb, #ebedee, #f5f0e1, #ffffff);
-    background-size: 400% 400%;
-    animation: liveStoryBg 15s ease infinite;
+    padding: 60px 0;
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     text-align: center;
     border-top: 1px solid rgba(212, 175, 55, 0.1);
     border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-@keyframes liveStoryBg {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 .story-container {
-    max-width: 950px;
+    max-width: 650px;
     margin: 0 auto;
-    padding: 60px 50px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    border-radius: 12px;
+    padding: 30px;
+    background: white;
+    box-shadow: var(--shadow-md);
+    border-radius: 8px;
     position: relative;
-    z-index: 2;
-    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .story-container::before {
     content: '⭐';
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     position: absolute;
-    top: -25px;
+    top: -15px;
     left: 50%;
     transform: translateX(-50%);
     background: white;
-    padding: 0 20px;
-    border-radius: 50%;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    padding: 0 10px;
 }
 
 .story-section h2 {
-    font-size: 3.8rem;
+    font-size: 2.2rem;
     color: var(--text-dark);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-family: var(--font-heading);
-    letter-spacing: 1px;
 }
 
 .story-section p {
-    font-size: 1.55rem;
-    line-height: 2;
-    color: var(--text-dark);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-muted);
     font-style: italic;
     font-family: var(--font-heading);
-    font-weight: 500;
 }
 
 /* 3D Square Frame */
