@@ -17,8 +17,12 @@ cd dsourcenetworks
 # No build step – pure HTML/CSS/JS
 ```
 
-## Deployment
-The site is automatically published via GitHub Pages. After any change, run the provided `Upload_To_GitHub.bat` script (or the equivalent git commands) to push updates.
+## Deployment & Going Live
+The site is published via GitHub Pages. We have provided several tools to make "Going Live" easy:
+
+1.  **`SYNC_AND_OPEN_WEBSITE.bat`** (Recommended): Double-click this to push your changes and immediately open the live GitHub link.
+2.  **`AUTO_SYNC_LIVE.ps1`**: Run this in PowerShell while you work; it will automatically upload every change as soon as you press Save!
+3.  **`Upload_To_GitHub.bat`**: The original manual upload script.
 
 ---
 *Created with Antigravity AI assistant*
