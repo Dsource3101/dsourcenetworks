@@ -496,7 +496,7 @@ ul {
 /* Why Us Section */
 .why-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 60px;
     align-items: center;
 }
@@ -538,8 +538,52 @@ ul {
 }
 
 .why-image {
-    height: 500px;
-    box-shadow: var(--shadow-md);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 3D Square Frame */
+.frame-3d {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background: white;
+    padding: 20px;
+    box-shadow: 
+        0 5px 15px rgba(0,0,0,0.1),
+        0 15px 35px rgba(0,0,0,0.1),
+        inset 0 0 15px rgba(0,0,0,0.05);
+    border: 10px solid #f8f8f8;
+    border-image: linear-gradient(135deg, #d4af37, #b5952f, #d4af37) 1;
+    transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.frame-3d:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.05);
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.15),
+        0 30px 60px rgba(0,0,0,0.1);
+}
+
+.frame-3d img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.frame-3d::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    z-index: -1;
 }
 
 /* Footer */
