@@ -145,19 +145,24 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(createFloatingItem, 300);
     }
 
-    // Local Preview Helper
+    // Automatic Redirect to GitHub (When using Go Live button)
     if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
-        const banner = document.createElement('div');
-        banner.style = 'background: #d4af37; color: black; text-align: center; padding: 12px; font-weight: bold; position: fixed; top: 0; left: 0; width: 100%; z-index: 10000; font-family: sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,0.2);';
-        banner.innerHTML = '🛠️ LOCAL PREVIEW: Changes will sync to <a href="https://dsource3101.github.io/dsourcenetworks/" target="_blank" style="text-decoration: underline; color: black;">GitHub Live</a> when you save.';
-        document.body.style.marginTop = '45px';
-        document.body.prepend(banner);
-        
-        // Add a close button to the banner
-        const close = document.createElement('span');
-        close.innerHTML = '&times;';
-        close.style = 'float: right; cursor: pointer; padding: 0 10px; font-size: 20px;';
-        close.onclick = () => { banner.remove(); document.body.style.marginTop = '0'; };
-        banner.appendChild(close);
+        // Only redirect if "local=true" is NOT in the URL
+        if (!window.location.search.includes('local=true')) {
+            window.location.href = 'https://dsource3101.github.io/dsourcenetworks/';
+        } else {
+            // Show the banner if we are intentionally staying local
+            const banner = document.createElement('div');
+            banner.style = 'background: #d4af37; color: black; text-align: center; padding: 12px; font-weight: bold; position: fixed; top: 0; left: 0; width: 100%; z-index: 10000; font-family: sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,0.2);';
+            banner.innerHTML = '🛠️ LOCAL MODE ACTIVE: Changes will sync to <a href="https://dsource3101.github.io/dsourcenetworks/" target="_blank" style="text-decoration: underline; color: black;">GitHub Live</a> when you save.';
+            document.body.style.marginTop = '45px';
+            document.body.prepend(banner);
+            
+            const close = document.createElement('span');
+            close.innerHTML = '&times;';
+            close.style = 'float: right; cursor: pointer; padding: 0 10px; font-size: 20px;';
+            close.onclick = () => { banner.remove(); document.body.style.marginTop = '0'; };
+            banner.appendChild(close);
+        }
     }
 });
