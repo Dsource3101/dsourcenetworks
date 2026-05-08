@@ -173,4 +173,44 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clean up URL without refreshing
         window.history.replaceState({}, document.title, window.location.pathname);
     }
+
+    // Dynamic Ad Banner Sync
+    const savedAdText = localStorage.getItem('dsource_ad_text');
+    if (savedAdText) {
+        const adTextElements = document.querySelectorAll('.ad-text');
+        adTextElements.forEach(el => el.innerText = savedAdText);
+    }
+
+    // Dynamic Product Rendering for Homepage
+    const productGrid = document.getElementById('dynamicProductGrid');
+    if (productGrid) {
+        let inventory = JSON.parse(localStorage.getItem('dsource_inventory'));
+        
+        // Initial Default Data if empty
+        if (!inventory || inventory.length === 0) {
+            inventory = [
+                { name: "Executive Selection 2026", category: "Premium", stock: 45, photo: "images/executive_selection.png" },
+                { name: "Festive Grandeur Hamper", category: "Festival", stock: 12, photo: "images/festival_hamper_1777448003402.png" },
+                { name: "Wellness Kit (Tea Set)", category: "Corporate", stock: 88, photo: "" }
+            ];
+            localStorage.setItem('dsource_inventory', JSON.stringify(inventory));
+        }
+
+        productGrid.innerHTML = inventory.map(product => {
+            const photoSrc = product.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(product.name) + '&background=f4f4f4&color=d4af37&size=300';
+            return `
+                <div class="product-card">
+                    <div class="product-image" style="height: 300px;">
+                        <img src="${photoSrc}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <span class="category">${product.category}</span>
+                        <h3>${product.name}</h3>
+                        <p>Stock Status: ${product.stock > 0 ? product.stock + ' units available' : '<span style="color: #fa5252;">Out of Stock</span>'}</p>
+                        <a href="#corporate" class="view-details">Inquire Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 });

@@ -27,7 +27,7 @@
             color: white;
             position: fixed;
             left: 0;
-            top: 0;
+            top: 40px;
             display: flex;
             flex-direction: column;
             padding: 20px 0;
@@ -74,6 +74,7 @@
             margin-left: var(--sidebar-width);
             flex-grow: 1;
             padding: 40px;
+            padding-top: 80px;
             min-height: 100vh;
         }
 
@@ -241,6 +242,13 @@
     </style>
 </head>
 <body>
+    <!-- Announcement Banner -->
+    <div class="ad-banner">
+        <div class="ad-banner-content" id="bannerContent">
+            <span class="ad-text">✨ NEW ARRIVAL: The Executive Selection 2026 is now LIVE! 🎁 Discover the peak of premium corporate gifting. 📦 Limited edition hampers available for pre-order. 🚚 Pan-India Shipping! ✨</span>
+            <span class="ad-text">✨ NEW ARRIVAL: The Executive Selection 2026 is now LIVE! 🎁 Discover the peak of premium corporate gifting. 📦 Limited edition hampers available for pre-order. 🚚 Pan-India Shipping! ✨</span>
+        </div>
+    </div>
 
     <!-- Employee Login Gate -->
     <div id="employeeLoginGate" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;">
@@ -314,12 +322,13 @@
             <div class="nav-item" onclick="showSection('inventory')">
                 <i class="fas fa-box-open"></i> Inventory
             </div>
+            <div class="nav-item" onclick="showSection('ads')">
+                <i class="fas fa-bullhorn"></i> Ad Management
+            </div>
             <div class="nav-item" onclick="showSection('team')">
                 <i class="fas fa-users"></i> Team Directory
             </div>
-            <div class="nav-item" onclick="window.open('https://dsource3101.github.io/dsourcenetworks/', '_blank')">
-                <i class="fas fa-globe"></i> Go Live
-            </div>
+
         </nav>
         <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">
             <a href="index.html" style="color: inherit; text-decoration: none;"><i class="fas fa-sign-out-alt"></i> Back to Site</a>
@@ -416,36 +425,60 @@
 
         <!-- Inventory View -->
         <div id="inventory" class="portal-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h3>Stock Management</h3>
+                <button onclick="openProductModal()" class="btn-attendance" style="margin: 0; padding: 10px 25px; font-size: 0.95rem;">
+                    <i class="fas fa-plus"></i> Add New Product
+                </button>
+            </div>
             <table class="inventory-table">
                 <thead>
                     <tr>
+                        <th>Photo</th>
                         <th>Item Name</th>
                         <th>Category</th>
-                        <th>Current Stock</th>
+                        <th>Stock</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Executive Silver Box</td>
-                        <td>Premium</td>
-                        <td>45 units</td>
-                        <td><span class="stock-badge stock-high">Healthy</span></td>
-                    </tr>
-                    <tr>
-                        <td>Festive Grandeur Hamper</td>
-                        <td>Festival</td>
-                        <td>12 units</td>
-                        <td><span class="stock-badge stock-low">Low Stock</span></td>
-                    </tr>
-                    <tr>
-                        <td>Wellness Kit (Tea Set)</td>
-                        <td>Corporate</td>
-                        <td>88 units</td>
-                        <td><span class="stock-badge stock-high">Healthy</span></td>
-                    </tr>
+                <tbody id="inventoryList">
+                    <!-- Dynamic Inventory items will be loaded here -->
                 </tbody>
             </table>
+        </div>
+
+        <!-- Product Management Modal -->
+        <div id="productModal" class="modal" style="display: none; align-items: center; justify-content: center;">
+            <div class="modal-content" style="max-width: 500px; width: 90%;">
+                <span class="close-modal" onclick="closeProductModal()">&times;</span>
+                <h2 id="productModalTitle">Add New Product</h2>
+                <form id="productForm" onsubmit="saveProduct(event)" class="inquiry-form" style="margin-top: 20px;">
+                    <input type="hidden" id="editProductIndex">
+                    <div class="form-group">
+                        <label>Product Photo URL</label>
+                        <input type="text" id="prodPhoto" placeholder="Enter image URL (e.g. images/...)">
+                    </div>
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="prodName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="prodCategory" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="Premium">Premium</option>
+                            <option value="Festival">Festival</option>
+                            <option value="Corporate">Corporate</option>
+                            <option value="Welcome Kit">Welcome Kit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="prodStock" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" style="width: 100%; margin-top: 20px;">Save Product</button>
+                </form>
+            </div>
         </div>
 
         <!-- Team View -->
@@ -486,6 +519,26 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Ad Management View -->
+        <div id="ads" class="portal-section">
+            <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: var(--shadow-md);">
+                <h3>Manage Announcement Banner</h3>
+                <p style="color: #666; margin-bottom: 25px;">Update the scrolling text displayed at the top of the website.</p>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 10px;">Banner Text</label>
+                    <textarea id="newAdText" rows="3" style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 1rem;" placeholder="Enter new ad text here..."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="updateBannerText()" class="btn-attendance" style="margin: 0; padding: 12px 30px;">Update Live Banner</button>
+                    <button onclick="resetBannerText()" style="background: #f1f1f1; color: #333; border: none; padding: 12px 30px; border-radius: 35px; cursor: pointer;">Reset to Default</button>
+                </div>
+                
+                <div id="adStatus" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none;"></div>
             </div>
         </div>
     </main>
@@ -532,9 +585,37 @@
                 'attendance': 'Employee Attendance',
                 'chat': 'Team Communication',
                 'inventory': 'Stock Management',
+                'ads': 'Ad Management',
                 'team': 'Team Directory'
             };
             document.getElementById('section-title').innerText = titles[sectionId];
+        }
+
+        // Ad Management Logic
+        function updateBannerText() {
+            const text = document.getElementById('newAdText').value.trim();
+            if(!text) return;
+            
+            localStorage.setItem('dsource_ad_text', text);
+            applyBannerText(text);
+            
+            const status = document.getElementById('adStatus');
+            status.innerText = "✓ Banner updated successfully! Changes are now live on all pages.";
+            status.style.display = 'block';
+            status.style.background = '#e6fcf5';
+            status.style.color = '#0ca678';
+            
+            setTimeout(() => { status.style.display = 'none'; }, 5000);
+        }
+
+        function resetBannerText() {
+            localStorage.removeItem('dsource_ad_text');
+            location.reload();
+        }
+
+        function applyBannerText(text) {
+            const banners = document.querySelectorAll('.ad-text');
+            banners.forEach(b => b.innerText = text);
         }
 
         // Attendance Logic
@@ -637,8 +718,101 @@
             document.body.removeChild(link);
         }
 
+        // Inventory Management Logic
+        let inventoryData = JSON.parse(localStorage.getItem('dsource_inventory') || JSON.stringify([
+            { name: "Executive Silver Box", category: "Premium", stock: 45, photo: "images/executive_selection.png" },
+            { name: "Festive Grandeur Hamper", category: "Festival", stock: 12, photo: "images/festival_hamper_1777448003402.png" },
+            { name: "Wellness Kit (Tea Set)", category: "Corporate", stock: 88, photo: "" }
+        ]));
+
+        function renderInventory() {
+            const list = document.getElementById('inventoryList');
+            if(!list) return;
+            
+            list.innerHTML = inventoryData.map((item, index) => {
+                const status = item.stock > 20 ? 'Healthy' : (item.stock > 0 ? 'Low Stock' : 'Out of Stock');
+                const badgeClass = item.stock > 20 ? 'stock-high' : 'stock-low';
+                const photoSrc = item.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(item.name) + '&background=eee&color=999';
+                
+                return `
+                    <tr>
+                        <td><img src="${photoSrc}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover; border: 1px solid #eee;"></td>
+                        <td style="font-weight: 600;">${item.name}</td>
+                        <td>${item.category}</td>
+                        <td>${item.stock} units</td>
+                        <td><span class="stock-badge ${badgeClass}">${status}</span></td>
+                        <td>
+                            <button onclick="openProductModal(${index})" style="background: none; border: none; color: #228be6; cursor: pointer; padding: 5px;"><i class="fas fa-edit"></i> Edit</button>
+                            <button onclick="deleteProduct(${index})" style="background: none; border: none; color: #fa5252; cursor: pointer; padding: 5px;"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openProductModal(index = null) {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('productModalTitle');
+            const form = document.getElementById('productForm');
+            
+            form.reset();
+            document.getElementById('editProductIndex').value = index !== null ? index : '';
+            
+            if (index !== null) {
+                const item = inventoryData[index];
+                title.innerText = "Edit Product";
+                document.getElementById('prodName').value = item.name;
+                document.getElementById('prodCategory').value = item.category;
+                document.getElementById('prodStock').value = item.stock;
+                document.getElementById('prodPhoto').value = item.photo;
+            } else {
+                title.innerText = "Add New Product";
+            }
+            
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function saveProduct(event) {
+            event.preventDefault();
+            const index = document.getElementById('editProductIndex').value;
+            const product = {
+                name: document.getElementById('prodName').value,
+                category: document.getElementById('prodCategory').value,
+                stock: parseInt(document.getElementById('prodStock').value),
+                photo: document.getElementById('prodPhoto').value
+            };
+            
+            if (index !== "") {
+                inventoryData[index] = product;
+            } else {
+                inventoryData.push(product);
+            }
+            
+            localStorage.setItem('dsource_inventory', JSON.stringify(inventoryData));
+            renderInventory();
+            closeProductModal();
+        }
+
+        function deleteProduct(index) {
+            if(confirm('Are you sure you want to delete this product?')) {
+                inventoryData.splice(index, 1);
+                localStorage.setItem('dsource_inventory', JSON.stringify(inventoryData));
+                renderInventory();
+            }
+        }
+
         // Run on load
-        document.addEventListener('DOMContentLoaded', initAttendance);
+        document.addEventListener('DOMContentLoaded', () => {
+            initAttendance();
+            renderInventory();
+        });
 
         function sendMessage() {
             const input = document.getElementById('chatInputField');
