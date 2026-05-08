@@ -607,6 +607,48 @@ ul {
     color: var(--text-dark);
 }
 
+/* Uniqueness Section */
+.uniqueness-section {
+    padding: 80px 0;
+    background-color: white;
+}
+
+.uniqueness-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
+}
+
+.unique-card {
+    padding: 30px 20px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    transition: all 0.3s ease;
+}
+
+.unique-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.unique-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.unique-card h3 {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-family: var(--font-body);
+}
+
 @media (max-width: 992px) {
     .story-grid {
         grid-template-columns: 1fr;
