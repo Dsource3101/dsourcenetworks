@@ -598,6 +598,7 @@ ul {
     line-height: 1.7;
     color: var(--text-muted);
     font-style: italic;
+    font-weight: 600;
     font-family: var(--font-heading);
     margin-bottom: 15px;
 }
