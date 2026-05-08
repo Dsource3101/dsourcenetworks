@@ -1,21 +1,24 @@
 @echo off
 echo =========================================
-echo   Step 1: Clearing old GitHub logins...
-echo =========================================
-cmdkey /delete:LegacyGeneric:target=git:https://github.com
-echo.
-echo =========================================
-echo   Step 2: Uploading to GitHub...
+echo   Syncing Website to GitHub...
 echo =========================================
 echo.
 
+echo 1. Staging changes...
 git add .
-git commit -m "Update website"
-git push -u origin main
-
 echo.
+
+echo 2. Committing changes...
+git commit -m "Update website: %date% %time%"
+echo.
+
+echo 3. Pushing to GitHub...
+git push -u origin main
+echo.
+
 echo =========================================
-echo   Done! Opening your live website...
+echo   Sync Complete! Opening live site...
 echo =========================================
 start https://dsource3101.github.io/dsourcenetworks/
+echo.
 pause
