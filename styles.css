@@ -546,47 +546,64 @@ ul {
 
 /* Our Story Section */
 .story-section {
-    padding: 100px 0;
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 120px 0;
+    background: linear-gradient(-45deg, #fdfbfb, #ebedee, #f5f0e1, #ffffff);
+    background-size: 400% 400%;
+    animation: liveStoryBg 15s ease infinite;
     text-align: center;
     border-top: 1px solid rgba(212, 175, 55, 0.1);
     border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes liveStoryBg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .story-container {
-    max-width: 800px;
+    max-width: 950px;
     margin: 0 auto;
-    padding: 40px;
-    background: white;
-    box-shadow: var(--shadow-md);
-    border-radius: 8px;
+    padding: 60px 50px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    border-radius: 12px;
     position: relative;
+    z-index: 2;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .story-container::before {
     content: '⭐';
-    font-size: 2rem;
+    font-size: 2.5rem;
     position: absolute;
-    top: -20px;
+    top: -25px;
     left: 50%;
     transform: translateX(-50%);
     background: white;
-    padding: 0 15px;
+    padding: 0 20px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 .story-section h2 {
-    font-size: 3rem;
+    font-size: 3.8rem;
     color: var(--text-dark);
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     font-family: var(--font-heading);
+    letter-spacing: 1px;
 }
 
 .story-section p {
-    font-size: 1.25rem;
-    line-height: 1.8;
-    color: var(--text-muted);
+    font-size: 1.55rem;
+    line-height: 2;
+    color: var(--text-dark);
     font-style: italic;
     font-family: var(--font-heading);
+    font-weight: 500;
 }
 
 /* 3D Square Frame */
