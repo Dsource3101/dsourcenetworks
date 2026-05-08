@@ -165,4 +165,12 @@ document.addEventListener('DOMContentLoaded', () => {
             banner.appendChild(close);
         }
     }
+
+    // Success Submission Alert
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('submitted')) {
+        alert("Your Enquiry form has been submitted we will connect to you within 24hrs");
+        // Clean up URL without refreshing
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 });
