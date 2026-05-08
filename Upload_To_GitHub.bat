@@ -15,6 +15,7 @@ git push -u origin main
 
 echo.
 echo =========================================
-echo   Done! Check your GitHub page.
+echo   Done! Opening your live website...
 echo =========================================
+start https://dsource3101.github.io/dsourcenetworks/
 pause
