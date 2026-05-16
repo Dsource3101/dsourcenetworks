@@ -189,9 +189,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initial Default Data if empty
         if (!inventory || inventory.length === 0) {
             inventory = [
+                { name: "The Elite Executive Box", category: "Ultra-Premium", stock: 15, photo: "images/luxury_signature_box.png" },
+                { name: "The Zen Workspace Kit", category: "Wellness", stock: 45, photo: "images/wellness_corporate_kit.png" },
+                { name: "The Royal Indian Hamper", category: "Artisanal", stock: 30, photo: "images/artisanal_indian_hamper.png" },
                 { name: "Executive Selection 2026", category: "Premium", stock: 45, photo: "images/executive_selection.png" },
                 { name: "Festive Grandeur Hamper", category: "Festival", stock: 12, photo: "images/festival_hamper_1777448003402.png" },
-                { name: "Wellness Kit (Tea Set)", category: "Corporate", stock: 88, photo: "" }
+                { name: "Premium Welcome Kit", category: "Onboarding", stock: 88, photo: "images/welcome_kit_1777447838852.png" }
             ];
             localStorage.setItem('dsource_inventory', JSON.stringify(inventory));
         }

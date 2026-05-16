@@ -22,6 +22,7 @@ $action = {
         git add .
         git commit -m "Auto-sync update - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
         git push origin main
+        git push origin main:gh-pages
         
         Write-Host "SUCCESS: Changes are now live on GitHub!" -ForegroundColor Green
         Write-Host "Note: It may take 30-60 seconds for the browser to show the update." -ForegroundColor Gray

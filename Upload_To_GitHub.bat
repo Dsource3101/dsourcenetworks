@@ -14,6 +14,7 @@ echo.
 
 echo 3. Pushing to GitHub...
 git push -u origin main
+git push origin main:gh-pages
 echo.
 
 echo =========================================
